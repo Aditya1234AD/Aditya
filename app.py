@@ -4,7 +4,6 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-# Folder for uploads (Render writable folder)
 UPLOAD_FOLDER = '/tmp/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -25,16 +24,14 @@ def upload():
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            # Return upload page again, but now with filename
-            return render_template('upload.html', filename=filename, name=name)
+            # 🔥 Show success page instead of upload page
+            return render_template('success.html', filename=filename, name=name)
 
-        else:
-            return "Please enter name and choose an image!"
+        return "Please enter name and choose an image!"
 
-    return render_template('upload.html', filename=None)
+    return render_template('upload.html')
+    
 
-
-# 🔥 Route to serve uploaded files
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
