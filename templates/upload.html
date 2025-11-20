@@ -5,6 +5,7 @@
 </head>
 <body>
   <h1>Upload your image</h1>
+
   <form method="POST" enctype="multipart/form-data">
     <label>Enter your name:</label><br>
     <input type="text" name="name" required><br><br>
@@ -14,7 +15,12 @@
     
     <button type="submit">Upload</button>
   </form>
-  
+
+  {% if filename %}
+    <h2>Uploaded Image:</h2>
+    <img src="{{ url_for('uploaded_file', filename=filename) }}" width="300">
+  {% endif %}
+
   <p><a href="{{ url_for('home') }}">Back to Home</a></p>
 </body>
 </html>
