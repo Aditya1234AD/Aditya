@@ -1,13 +1,11 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-# Create upload folder inside project directory
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Folder for uploads (Render writable folder)
 UPLOAD_FOLDER = '/tmp/uploads'
-
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -26,11 +24,20 @@ def upload():
         if name and image:
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return f"<h2>Thanks {name}!</h2><p>Image uploaded successfully.</p>"
+
+            # Return upload page again, but now with filename
+            return render_template('upload.html', filename=filename, name=name)
+
         else:
             return "Please enter name and choose an image!"
 
-    return render_template('upload.html')
+    return render_template('upload.html', filename=None)
+
+
+# 🔥 Route to serve uploaded files
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
 if __name__ == '__main__':
