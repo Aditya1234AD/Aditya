@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Create upload folder inside project directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
+UPLOAD_FOLDER = '/tmp/uploads'
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
