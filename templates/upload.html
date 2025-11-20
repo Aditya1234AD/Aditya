@@ -16,12 +16,6 @@
     <button type="submit">Upload</button>
   </form>
 
- {% if filename %}
-  <h2>Thanks {{ name }}!</h2>
-  <p>Your image has been uploaded successfully!</p>
-  <img src="{{ url_for('uploaded_file', filename=filename) }}" width="300">
-{% endif %} 
-
   <p><a href="{{ url_for('home') }}">Back to Home</a></p>
 </body>
 </html>
